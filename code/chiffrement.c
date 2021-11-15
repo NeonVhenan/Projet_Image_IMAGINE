@@ -6,6 +6,24 @@
 #define N 8
 
 
+typedef struct{
+  double val;
+  int pos;
+}tab;
+
+
+int compare (const void * a, const void * b){
+  tab ta, tb;
+  ta = *(tab*)a;
+  tb = *(tab*)b;
+  if(ta.val > tb.val)
+    return 1;
+  if(ta.val == tb.val)
+    return 0;
+  return -1;
+}
+
+
 void usage(char * s){
   printf("Usage : %s ImageIn.pgm ImageOut.pgm key_x0 key_k\n", s);
 }
@@ -17,10 +35,11 @@ int main(int argc, char* argv[])
   char cNomImgLue[250], cNomImgEcrite[250];
   int nH, nW, nTaille, nTaille3;
   int nH8, nW8, nTaille8, nTaille38;
-  int x0, k;
+  double x0, k;
   int i8, j8;
   int mR, mG, mB;
   int di, dj;
+  tab * xn;
   
   
   if (argc != 5){
@@ -30,10 +49,10 @@ int main(int argc, char* argv[])
    
   sscanf (argv[1],"%s",cNomImgLue);
   sscanf (argv[2],"%s",cNomImgEcrite);
-  x0 = atoi(argv[3]);
-  k = atoi(argv[4]); 
+  x0 = atof(argv[3]);
+  k = atof(argv[4]); 
 
-  OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRbits, *ImgBbits, *ImgGbits, *ImgOut;
+  OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRchiffr, *ImgBchiffr, *ImgGchiffr, *ImgOut;
    
   lire_nb_lignes_colonnes_image_ppm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
@@ -62,9 +81,9 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgGbloc, OCTET, nTaille8/(N*N));
   allocation_tableau(ImgBbloc, OCTET, nTaille8/(N*N));
 
-  allocation_tableau(ImgRbits, OCTET, nTaille8*8/(N*N));
-  allocation_tableau(ImgGbits, OCTET, nTaille8*8/(N*N));
-  allocation_tableau(ImgBbits, OCTET, nTaille8*8/(N*N));
+  allocation_tableau(ImgRchiffr, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgGchiffr, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
  
   for(int i = 0; i < nH; i++){
     j8 = 0;
@@ -117,176 +136,31 @@ int main(int argc, char* argv[])
     i8++;
   }
 
-  i8 = 0;
-  for(int i = 0; i < nTaille8*8/(N*N); i+=8){
-    if(ImgRbloc[i8] >= 128){ 
-      ImgRbits[i+7] = 1;
-      ImgRbloc[i8]-=128;
-    }
-    else{
-      ImgRbits[i+7] = 0;
-    }
-    if(ImgRbloc[i8] >= 64){ 
-      ImgRbits[i+6] = 1;
-      ImgRbloc[i8]-=64;
-    }
-    else{
-      ImgRbits[i+6] = 0;
-    }
-    if(ImgRbloc[i8] >= 32){ 
-      ImgRbits[i+5] = 1;
-      ImgRbloc[i8]-=32;
-    }
-    else{
-      ImgRbits[i+5] = 0;
-    }
-    if(ImgRbloc[i8] >= 16){ 
-      ImgRbits[i+4] = 1;
-      ImgRbloc[i8]-=16;
-    }
-    else{
-      ImgRbits[i+4] = 0;
-    }
-    if(ImgRbloc[i8] >= 8){ 
-      ImgRbits[i+3] = 1;
-      ImgRbloc[i8]-= 8;
-    }
-    else{
-      ImgRbits[i+3] = 0;
-    }
-    if(ImgRbloc[i8] >= 4){ 
-      ImgRbits[i+2] = 1;
-      ImgRbloc[i8]-= 4;
-    }
-    else{
-      ImgRbits[i+2] = 0;
-    }
-    if(ImgRbloc[i8] >= 2){ 
-      ImgRbits[i+1] = 1;
-      ImgRbloc[i8]-= 2;
-    }
-    else{
-      ImgRbits[i+1] = 0;
-    }
-    ImgRbits[i] = ImgRbloc[i8];
-    i8++;
-  }
 
-  i8 = 0;
-  for(int i = 0; i < nTaille8*8/(N*N); i+=8){
-    if(ImgGbloc[i8] >= 128){ 
-      ImgGbits[i+7] = 1;
-      ImgGbloc[i8]-=128;
-    }
-    else{
-      ImgGbits[i+7] = 0;
-    }
-    if(ImgGbloc[i8] >= 64){ 
-      ImgGbits[i+6] = 1;
-      ImgGbloc[i8]-=64;
-    }
-    else{
-      ImgGbits[i+6] = 0;
-    }
-    if(ImgGbloc[i8] >= 32){ 
-      ImgGbits[i+5] = 1;
-      ImgGbloc[i8]-=32;
-    }
-    else{
-      ImgGbits[i+5] = 0;
-    }
-    if(ImgGbloc[i8] >= 16){ 
-      ImgGbits[i+4] = 1;
-      ImgGbloc[i8]-=16;
-    }
-    else{
-      ImgGbits[i+4] = 0;
-    }
-    if(ImgGbloc[i8] >= 8){ 
-      ImgGbits[i+3] = 1;
-      ImgGbloc[i8]-= 8;
-    }
-    else{
-      ImgGbits[i+3] = 0;
-    }
-    if(ImgGbloc[i8] >= 4){ 
-      ImgGbits[i+2] = 1;
-      ImgGbloc[i8]-= 4;
-    }
-    else{
-      ImgGbits[i+2] = 0;
-    }
-    if(ImgGbloc[i8] >= 2){ 
-      ImgGbits[i+1] = 1;
-      ImgGbloc[i8]-= 2;
-    }
-    else{
-      ImgGbits[i+1] = 0;
-    }
-    ImgGbits[i] = ImgGbloc[i8];
-    i8++;
-  }
-
-  i8 = 0;
-  for(int i = 0; i < nTaille8*8/(N*N); i+=8){
-    if(ImgBbloc[i8] >= 128){ 
-      ImgBbits[i+7] = 1;
-      ImgBbloc[i8]-=128;
-    }
-    else{
-      ImgBbits[i+7] = 0;
-    }
-    if(ImgBbloc[i8] >= 64){ 
-      ImgBbits[i+6] = 1;
-      ImgBbloc[i8]-=64;
-    }
-    else{
-      ImgBbits[i+6] = 0;
-    }
-    if(ImgBbloc[i8] >= 32){ 
-      ImgBbits[i+5] = 1;
-      ImgBbloc[i8]-=32;
-    }
-    else{
-      ImgBbits[i+5] = 0;
-    }
-    if(ImgBbloc[i8] >= 16){ 
-      ImgBbits[i+4] = 1;
-      ImgBbloc[i8]-=16;
-    }
-    else{
-      ImgBbits[i+4] = 0;
-    }
-    if(ImgBbloc[i8] >= 8){ 
-      ImgBbits[i+3] = 1;
-      ImgBbloc[i8]-= 8;
-    }
-    else{
-      ImgBbits[i+3] = 0;
-    }
-    if(ImgBbloc[i8] >= 4){ 
-      ImgBbits[i+2] = 1;
-      ImgBbloc[i8]-= 4;
-    }
-    else{
-      ImgBbits[i+2] = 0;
-    }
-    if(ImgBbloc[i8] >= 2){ 
-      ImgBbits[i+1] = 1;
-      ImgBbloc[i8]-= 2;
-    }
-    else{
-      ImgBbits[i+1] = 0;
-    }
-    ImgBbits[i] = ImgBbloc[i8];
-    i8++;
-  }
-
+  xn = malloc(sizeof(double)*nTaille8/(N*N));
+  xn[0].val = cos(k*acos(x0));
+  xn[0].pos = 0;
   
+  printf("%f\n", xn[0].val);
+  
+  for(int i = 1; i < nTaille8/(N*N); i++){
+    xn[i].val = cos(k*acos(xn[i-1].val));
+    xn[i].pos = i;
+    printf("%f\n", xn[i].val);
+  }
 
+  qsort(xn, nTaille8/(N*N), sizeof(tab), compare);
+
+
+  for(int i = 0; i < nTaille8/(N*N); i++){
+    printf("%f            %d\n", xn[i].val, xn[i].pos);
+  }
+  
   //ecrire_image_ppm(cNomImgEcrite, ImgOutbloc, nH8/N, nW8/N);
 
   free(ImgIn);
+
+  
   
   return 1;
 }
