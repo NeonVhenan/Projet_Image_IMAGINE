@@ -1,3 +1,10 @@
+recalage : recalage.o image_ppm.o
+	gcc recalage.o image_ppm.o -o recalage -lm
+
+recalage.o : recalage.c
+	gcc recalage.c -c -lm
+
+
 dechiffrement : dechiffrement.o image_ppm.o
 	gcc dechiffrement.o image_ppm.o -o dechiffrement -lm
 
@@ -25,4 +32,4 @@ image_ppm.o : image_ppm.c image_ppm.h
 
 clean :
 	rm -rf *.o
-	rm -f chiffrement dechiffrement psnr
+	rm -f chiffrement dechiffrement recalage psnr
