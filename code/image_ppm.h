@@ -23,6 +23,16 @@ if( (nom = (type*) calloc (nombre, sizeof(type) ) ) == NULL ) \
 typedef unsigned char OCTET;
 
 
+typedef struct{
+  double val;
+  int pos;
+}tab;
+
+int compare (const void * a, const void * b);
+
+
+
+
 void ignorer_commentaires(FILE * f);
 
 void ecrire_image_ppm(char  nom_image[], OCTET *pt_image, int nb_lignes, int nb_colonnes);

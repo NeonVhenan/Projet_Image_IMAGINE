@@ -6,24 +6,6 @@
 #define N 16
 
 
-typedef struct{
-  double val;
-  int pos;
-}tab;
-
-
-int compare (const void * a, const void * b){
-  tab ta, tb;
-  ta = *(tab*)a;
-  tb = *(tab*)b;
-  if(ta.val > tb.val)
-    return 1;
-  if(ta.val == tb.val)
-    return 0;
-  return -1;
-}
-
-
 void usage(char * s){
   printf("Usage : %s ImageIn.pgm ImageOut.pgm key_x0 key_k\n", s);
 }
