@@ -8,7 +8,6 @@ void usage(char * s){
 }
 
 
-
 int main(int argc, char* argv[])
 {
   char cNomImgLue[250], cNomImgEcrite[250];
@@ -139,9 +138,9 @@ int main(int argc, char* argv[])
   }
 
   for(int i = 0; i < nTaille8/(N*N); i++){
-    ImgRchiffr[i] = ImgRbloc[xn[i].pos];
-    ImgGchiffr[i] = ImgGbloc[xn[i].pos];
-    ImgBchiffr[i] = ImgBbloc[xn[i].pos];
+    ImgRchiffr[xn[i].pos] = ImgRbloc[i];
+    ImgGchiffr[xn[i].pos] = ImgGbloc[i];
+    ImgBchiffr[xn[i].pos] = ImgBbloc[i];
   }
 
   for(int i = 0; i < nH8/N; i++){

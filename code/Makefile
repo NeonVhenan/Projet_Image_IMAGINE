@@ -1,3 +1,10 @@
+dechiffrement : dechiffrement.o image_ppm.o
+	gcc dechiffrement.o image_ppm.o -o dechiffrement -lm
+
+dechiffrement.o : dechiffrement.c
+	gcc dechiffrement.c -c -lm
+
+
 chiffrement : chiffrement.o image_ppm.o
 	gcc chiffrement.o image_ppm.o -o chiffrement -lm
 
