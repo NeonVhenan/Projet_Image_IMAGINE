@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-#define N 8
+#define N 16
 
 
 typedef struct{
@@ -175,10 +175,6 @@ int main(int argc, char* argv[])
     }
   }
 
-  ecrire_image_ppm(cNomImgEcrite, ImgBloc, nH8/N, nW8/N);
-
-  //printf("ici ?\n");
-
   i8 = 0;
   for(int i = 0; i < nH8; i+=N){
     j8 = 0;
@@ -186,6 +182,8 @@ int main(int argc, char* argv[])
       for(int l = 0; l < N; l++){
 	for(int p = 0; p < N; p++){
 	  ImgOut[(i+l)*nW8*3+j+p*3] = ImgBloc[i8*(nW8/N)*3+j8];
+	  ImgOut[(i+l)*nW8*3+j+1+p*3] = ImgBloc[i8*(nW8/N)*3+j8+1];
+	  ImgOut[(i+l)*nW8*3+j+2+p*3] = ImgBloc[i8*(nW8/N)*3+j8+2];
 	}
       }
       j8++;
@@ -193,7 +191,7 @@ int main(int argc, char* argv[])
     i8++;
   }
   
-  //ecrire_image_ppm(cNomImgEcrite, ImgOut, nH8, nW8);
+  ecrire_image_ppm(cNomImgEcrite, ImgOut, nH8, nW8);
 
   free(ImgIn);
 
