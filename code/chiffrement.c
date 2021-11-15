@@ -3,6 +3,8 @@
 #include <stdlib.h>
 
 
+#define N 8
+
 
 void usage(char * s){
   printf("Usage : %s ImageIn.pgm ImageOut.pgm key_x0 key_k\n", s);
@@ -31,7 +33,7 @@ int main(int argc, char* argv[])
   x0 = atoi(argv[3]);
   k = atoi(argv[4]); 
 
-  OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRbits, *ImgBbits, *ImgGbits *ImgOut;
+  OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRbits, *ImgBbits, *ImgGbits, *ImgOut;
    
   lire_nb_lignes_colonnes_image_ppm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
@@ -46,26 +48,23 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgB, OCTET, nTaille);
 
   nH8 = nH;
-  if(nH % 8 != 0)
-    nH8 = nH + (8 - (nH % 8));
+  if(nH % N != 0)
+    nH8 = nH + (N - (nH % N));
   nW8 = nW;
-  if(nW % 8 != 0)
-    nW8 = nW + (8 - (nW % 8));
+  if(nW % N != 0)
+    nW8 = nW + (N - (nW % N));
   nTaille8 = nH8 * nW8;
   nTaille38 = nTaille8 * 3;
     
   allocation_tableau(ImgOut, OCTET, nTaille38);
-  allocation_tableau(ImgR8, OCTET, nTaille8);
-  allocation_tableau(ImgG8, OCTET, nTaille8);
-  allocation_tableau(ImgB8, OCTET, nTaille8);
 
-  allocation_tableau(ImgRbloc, OCTET, nTaille8/64);
-  allocation_tableau(ImgGbloc, OCTET, nTaille8/64);
-  allocation_tableau(ImgBbloc, OCTET, nTaille8/64);
+  allocation_tableau(ImgRbloc, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgGbloc, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgBbloc, OCTET, nTaille8/(N*N));
 
-  allocation_tableau(ImgRbits, OCTET, nTaille8/8);
-  allocation_tableau(ImgGbits, OCTET, nTaille8/8);
-  allocation_tableau(ImgBbits, OCTET, nTaille8/8);
+  allocation_tableau(ImgRbits, OCTET, nTaille8*8/(N*N));
+  allocation_tableau(ImgGbits, OCTET, nTaille8*8/(N*N));
+  allocation_tableau(ImgBbits, OCTET, nTaille8*8/(N*N));
  
   for(int i = 0; i < nH; i++){
     j8 = 0;
@@ -78,20 +77,20 @@ int main(int argc, char* argv[])
   }
 
   i8 = 0;
-  for(int i = 0; i < nH; i+=8){
+  for(int i = 0; i < nH; i+=N){
     j8 = 0;
-    for(int j = 0; j < nW; j+=8){
+    for(int j = 0; j < nW; j+=N){
       mR = 0;
       mB = 0;
       mG = 0;
       di = 0;
-      for(int l = 0; l < 8; l++){
+      for(int l = 0; l < N; l++){
 	if(i + l >= nH){
 	  di = l;
 	  l = (nH - 1) - i;
 	}
 	dj = 0;
-	for(int w = 0 ; w < 8; w++){
+	for(int w = 0 ; w < N; w++){
 	  if(j + w >= nW){
 	    dj = w;
 	    w = (nW - 1) - j;
@@ -107,19 +106,19 @@ int main(int argc, char* argv[])
 	  l = di;
 	}
       }
-      mR = mR / 64.0;
-      mG = mG / 64.0;
-      mB = mB / 64.0;
-      ImgRbloc[i8*(nW8/8)+j8] = mR;
-      ImgGbloc[i8*(nW8/8)+j8] = mG;
-      ImgBbloc[i8*(nW8/8)+j8] = mB;
+      mR = mR * 1.0 / (N*N);
+      mG = mG * 1.0 / (N*N);
+      mB = mB * 1.0 / (N*N);
+      ImgRbloc[i8*(nW8/N)+j8] = mR;
+      ImgGbloc[i8*(nW8/N)+j8] = mG;
+      ImgBbloc[i8*(nW8/N)+j8] = mB;
       j8++;
     }
     i8++;
   }
 
   i8 = 0;
-  for(int i = 0; i < nTaille8/8, i+=8){
+  for(int i = 0; i < nTaille8*8/(N*N); i+=8){
     if(ImgRbloc[i8] >= 128){ 
       ImgRbits[i+7] = 1;
       ImgRbloc[i8]-=128;
@@ -174,7 +173,7 @@ int main(int argc, char* argv[])
   }
 
   i8 = 0;
-  for(int i = 0; i < nTaille8/8, i+=8){
+  for(int i = 0; i < nTaille8*8/(N*N); i+=8){
     if(ImgGbloc[i8] >= 128){ 
       ImgGbits[i+7] = 1;
       ImgGbloc[i8]-=128;
@@ -229,7 +228,7 @@ int main(int argc, char* argv[])
   }
 
   i8 = 0;
-  for(int i = 0; i < nTaille8/8, i+=8){
+  for(int i = 0; i < nTaille8*8/(N*N); i+=8){
     if(ImgBbloc[i8] >= 128){ 
       ImgBbits[i+7] = 1;
       ImgBbloc[i8]-=128;
@@ -285,7 +284,7 @@ int main(int argc, char* argv[])
 
   
 
-  //ecrire_image_ppm(cNomImgEcrite, ImgOutbloc, nH8/8, nW8/8);
+  //ecrire_image_ppm(cNomImgEcrite, ImgOutbloc, nH8/N, nW8/N);
 
   free(ImgIn);
   
