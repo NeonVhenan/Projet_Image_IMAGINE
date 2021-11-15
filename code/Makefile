@@ -25,5 +25,4 @@ image_ppm.o : image_ppm.c image_ppm.h
 
 clean :
 	rm -rf *.o
-	rm -f chiffrement
-	rm -f psnr
+	rm -f chiffrement dechiffrement psnr

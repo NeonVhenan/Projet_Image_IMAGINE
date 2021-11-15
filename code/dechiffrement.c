@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
   x0 = atof(argv[3]);
   k = atof(argv[4]); 
 
-  OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRchiffr, *ImgBchiffr, *ImgGchiffr, *ImgOut, *ImgBloc;
+  OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRchiffr, *ImgBchiffr, *ImgGchiffr, *ImgOut, *ImgR8, *ImgG8, *ImgB8;
 
    
   lire_nb_lignes_colonnes_image_ppm(cNomImgLue, &nH, &nW);
@@ -64,7 +64,9 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgGchiffr, OCTET, nTaille8/(N*N));
   allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
 
-  allocation_tableau(ImgBloc, OCTET, nTaille38/(N*N));
+  allocation_tableau(ImgR8, OCTET, nTaille8);
+  allocation_tableau(ImgG8, OCTET, nTaille8);
+  allocation_tableau(ImgB8, OCTET, nTaille8);
 
  
   for(int i = 0; i < nH; i++){
@@ -143,30 +145,30 @@ int main(int argc, char* argv[])
     ImgBchiffr[xn[i].pos] = ImgBbloc[i];
   }
 
-  for(int i = 0; i < nH8/N; i++){
-    j8 = 0;
-    for(int j = 0; j < (nW8/N)*3; j+=3){
-      ImgBloc[i*3*(nW8/N)+j] = ImgRchiffr[i*(nW8/N)+j8];
-      ImgBloc[i*3*(nW8/N)+j+1] = ImgGchiffr[i*(nW8/N)+j8];
-      ImgBloc[i*3*(nW8/N)+j+2] = ImgBchiffr[i*(nW8/N)+j8];
-      j8++;
-    }
-  }
-
   i8 = 0;
   for(int i = 0; i < nH8; i+=N){
     j8 = 0;
-    for(int j = 0; j < nW8*3; j+=N*3){
+    for(int j = 0; j < nW8; j+=N){
       for(int l = 0; l < N; l++){
 	for(int p = 0; p < N; p++){
-	  ImgOut[(i+l)*nW8*3+j+p*3] = ImgBloc[i8*(nW8/N)*3+j8];
-	  ImgOut[(i+l)*nW8*3+j+1+p*3] = ImgBloc[i8*(nW8/N)*3+j8+1];
-	  ImgOut[(i+l)*nW8*3+j+2+p*3] = ImgBloc[i8*(nW8/N)*3+j8+2];
+	  ImgR8[(i+l)*nW8+j+p] = ImgRchiffr[i8*(nW8/N)+j8];
+	  ImgG8[(i+l)*nW8+j+p] = ImgGchiffr[i8*(nW8/N)+j8];
+	  ImgB8[(i+l)*nW8+j+p] = ImgBchiffr[i8*(nW8/N)+j8];
 	}
       }
       j8++;
     }
     i8++;
+  }
+
+  for(int i = 0; i < nH8; i++){
+    j8 = 0;
+    for(int j = 0; j < nW8*3; j+=3){
+      ImgOut[i*nW8*3+j] = ImgR8[i*nW8+j8];
+      ImgOut[i*nW8*3+j+1] = ImgG8[i*nW8+j8];
+      ImgOut[i*nW8*3+j+2] = ImgB8[i*nW8+j8];
+      j8++;
+    }
   }
   
   ecrire_image_ppm(cNomImgEcrite, ImgOut, nH8, nW8);
