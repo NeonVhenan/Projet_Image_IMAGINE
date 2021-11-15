@@ -52,7 +52,11 @@ int main(int argc, char* argv[])
   x0 = atof(argv[3]);
   k = atof(argv[4]); 
 
+<<<<<<< HEAD
+  OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRchiffr, *ImgBchiffr, *ImgGchiffr, *ImgOut, *ImgBloc;
+=======
   OCTET *ImgIn, *ImgR, *ImgB, *ImgG, *ImgRbloc, *ImgBbloc, *ImgGbloc, *ImgRchiffr, *ImgBchiffr, *ImgGchiffr, *ImgOut;
+>>>>>>> a1bfa9a3d68ee4fc23bf88c3c67e32fe2b68dde9
    
   lire_nb_lignes_colonnes_image_ppm(cNomImgLue, &nH, &nW);
   nTaille = nH * nW;
@@ -80,10 +84,19 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgRbloc, OCTET, nTaille8/(N*N));
   allocation_tableau(ImgGbloc, OCTET, nTaille8/(N*N));
   allocation_tableau(ImgBbloc, OCTET, nTaille8/(N*N));
+<<<<<<< HEAD
 
   allocation_tableau(ImgRchiffr, OCTET, nTaille8/(N*N));
   allocation_tableau(ImgGchiffr, OCTET, nTaille8/(N*N));
   allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
+
+  allocation_tableau(ImgBloc, OCTET, nTaille38/(N*N));
+=======
+
+  allocation_tableau(ImgRchiffr, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgGchiffr, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
+>>>>>>> a1bfa9a3d68ee4fc23bf88c3c67e32fe2b68dde9
  
   for(int i = 0; i < nH; i++){
     j8 = 0;
@@ -136,6 +149,62 @@ int main(int argc, char* argv[])
     i8++;
   }
 
+<<<<<<< HEAD
+  xn = malloc(sizeof(double)*nTaille8/(N*N));
+  xn[0].val = cos(k*acos(x0));
+  xn[0].pos = 0;
+  
+  printf("%f\n", xn[0].val);
+  
+  for(int i = 1; i < nTaille8/(N*N); i++){
+    xn[i].val = cos(k*acos(xn[i-1].val));
+    xn[i].pos = i;
+    printf("%f\n", xn[i].val);
+  }
+
+  qsort(xn, nTaille8/(N*N), sizeof(tab), compare);
+
+
+  for(int i = 0; i < nTaille8/(N*N); i++){
+    printf("%f            %d\n", xn[i].val, xn[i].pos);
+  }
+
+  for(int i = 0; i < nTaille8/(N*N); i++){
+    ImgRchiffr[i] = ImgRbloc[xn[i].pos];
+    ImgGchiffr[i] = ImgGbloc[xn[i].pos];
+    ImgBchiffr[i] = ImgBbloc[xn[i].pos];
+  }
+
+  for(int i = 0; i < nH8/N; i++){
+    j8 = 0;
+    for(int j = 0; j < (nW8/N)*3; j+=3){
+      ImgBloc[i*3*(nW8/N)+j] = ImgRchiffr[i*(nW8/N)+j8];
+      ImgBloc[i*3*(nW8/N)+j+1] = ImgGchiffr[i*(nW8/N)+j8];
+      ImgBloc[i*3*(nW8/N)+j+2] = ImgBchiffr[i*(nW8/N)+j8];
+      j8++;
+    }
+  }
+
+  ecrire_image_ppm(cNomImgEcrite, ImgBloc, nH8/N, nW8/N);
+
+  //printf("ici ?\n");
+
+  i8 = 0;
+  for(int i = 0; i < nH8; i+=N){
+    j8 = 0;
+    for(int j = 0; j < nW8*3; j+=N*3){
+      for(int l = 0; l < N; l++){
+	for(int p = 0; p < N; p++){
+	  ImgOut[(i+l)*nW8*3+j+p*3] = ImgBloc[i8*(nW8/N)*3+j8];
+	}
+      }
+      j8++;
+    }
+    i8++;
+  }
+  
+  //ecrire_image_ppm(cNomImgEcrite, ImgOut, nH8, nW8);
+=======
 
   xn = malloc(sizeof(double)*nTaille8/(N*N));
   xn[0].val = cos(k*acos(x0));
@@ -157,6 +226,7 @@ int main(int argc, char* argv[])
   }
   
   //ecrire_image_ppm(cNomImgEcrite, ImgOutbloc, nH8/N, nW8/N);
+>>>>>>> a1bfa9a3d68ee4fc23bf88c3c67e32fe2b68dde9
 
   free(ImgIn);
 
