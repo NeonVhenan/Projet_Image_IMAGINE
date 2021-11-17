@@ -1,7 +1,7 @@
 recalage : recalage.o image_ppm.o
 	gcc recalage.o image_ppm.o -o recalage -lm
 
-recalage.o : recalage.c
+recalage.o : recalage.c image_ppm.h
 	gcc recalage.c -c -lm
 
 
@@ -26,6 +26,11 @@ psnr.o : psnr.c
 	gcc psnr.c -c -lm
 
 
+modif : modif.o image_ppm.o
+	gcc modif.o image_ppm.o -o modif -lm
+
+modif.o : modif.c image_ppm.h
+	gcc modif.c -c -lm
 
 gradient : gradient.o image_ppm.o
 	gcc gradient.o image_ppm.o -o gradient -lm
@@ -39,4 +44,4 @@ image_ppm.o : image_ppm.c image_ppm.h
 
 clean :
 	rm -rf *.o
-	rm -f chiffrement dechiffrement recalage psnr gradient
+	rm -f chiffrement dechiffrement recalage psnr modif gradient

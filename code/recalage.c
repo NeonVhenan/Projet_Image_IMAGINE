@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
   int xp2, yp2;
   int xp3, yp3;
   int k, l;
+  int tailleBloc, valMoy;
   
   
   if (argc != 3){
@@ -149,55 +150,56 @@ int main(int argc, char* argv[])
   }
 
   //ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
+
+  k = nHC-1;
+  l = 3*(nW-1);
+  while(ImgCadre[k*nWC*3+l] > 7 && ImgCadre[k*nWC*3+l+1] > 7 && ImgCadre[k*nWC*3+l+2] > 7){
+    l-=3;
+  }
+
+  k = nHC-1;
+  while(ImgCadre[k*nWC*3+l] > 7 && ImgCadre[k*nWC*3+l+1] > 7 && ImgCadre[k*nWC*3+l+2] > 7){
+    k--;
+  }
+
+  tailleBloc = k-1;
+  while(ImgCadre[k*nWC*3+l] <= 7 && ImgCadre[k*nWC*3+l+1] <= 7 && ImgCadre[k*nWC*3+l+2] <= 7){
+    k--;
+  }
   
+
+  tailleBloc = tailleBloc - k;
+  printf("taille bloc : %d\n", tailleBloc);
+
+
 
   /**********************************IMAGE AVEC UN PIXEL PAR COULEUR**********************************/
   
-  nHP = 1;
-  nWP = 1;
-  for(int j = 3; j < nWR*3; j+=3){
-    if(distance(Img[nWR*3+j], Img[nWR*3+j-3]) > 7 || distance(Img[nWR*3+j+1], Img[nWR*3+j-2]) > 7 || distance(Img[nWR*3+j+2], Img[nWR*3+j-1]) > 7)
-      nWP++;
-  }
-  for(int i = 1; i < nHR ; i++){
-    if(distance(Img[i*3*nWR], Img[(i-1)*3*nWR]) > 7 || distance(Img[i*3*nWR+1], Img[(i-1)*3*nWR+1]) > 7 || distance(Img[i*3*nWR+2], Img[(i-1)*3*nWR+2]) > 7)
-      nHP++;
-  }
-
+  nHP = nHR/tailleBloc;
+  nWP = nWR/tailleBloc;
+  
+  if(tailleBloc % 2 == 0)
+    valMoy = tailleBloc/2;
+  else
+    valMoy = (tailleBloc+1)/2;
+  
   printf("%d, %d\n", nHP, nWP);
   nTailleP = nHP * nWP;
   nTaille3P = 3 * nTailleP;
 
   allocation_tableau(ImgP, OCTET, nTaille3P);
 
-  ImgP[0] = Img[0];
-  ImgP[1] = Img[1];
-  ImgP[2] = Img[2];
   k = 0;
-  l = 0;
-  for(int j = 3; j < nWR*3; j+=3){
-    if(distance(Img[j], Img[j-3]) > 7 || distance(Img[j+1], Img[j-2]) > 7 || distance(Img[j+2], Img[j-1]) > 7){
-      l+=3;
-      ImgP[l] = Img[j];
-      ImgP[l+1] = Img[j+1];
-      ImgP[l+2] = Img[j+2];
-    }
-  }
-  for(int i = 1; i < nHR ; i++){
-    if(distance(Img[i*3*nWR], Img[(i-1)*3*nWR]) > 7 || distance(Img[i*3*nWR+1], Img[(i-1)*3*nWR+1]) > 7 || distance(Img[i*3*nWR+2], Img[(i-1)*3*nWR+2]) > 7){
-      k++;
-      ImgP[k*3*nWP] = Img[i*3*nWR];
-      ImgP[k*3*nWP+1] = Img[i*3*nWR+1];
-      ImgP[k*3*nWP+2] = Img[i*3*nWR+2];
-    }
+  for(int i = 1; i < nHP*tailleBloc ; i+=tailleBloc){
     l = 0;
-    for(int j = 3; j < nWR*3; j+=3){
-      if(distance(Img[i*3*nWR+j], Img[i*3*nWR+j-3]) > 7 || distance(Img[i*3*nWR+j+1], Img[i*3*nWR+j-2]) > 7 || distance(Img[i*3*nWR+j+2], Img[i*3*nWR+j-1]) > 7)
+    for(int j = 3; j < nWP*tailleBloc*3; j+=3*tailleBloc){
+      printf("%d %d %d\n", Img[(i+valMoy)*3*nWR+j+valMoy*3], Img[(i+valMoy)*3*nWR+j+1+valMoy*3], Img[(i+valMoy)*3*nWR+j+2+valMoy*3]);
+      ImgP[k*3*nWP+l] = Img[(i+valMoy)*3*nWR+j+valMoy*3];
+      ImgP[k*3*nWP+l+1] = Img[(i+valMoy)*3*nWR+j+1+valMoy*3];
+      ImgP[k*3*nWP+l+2] = Img[(i+valMoy)*3*nWR+j+2+valMoy*3];
       l+=3;
-      ImgP[k*3*nWP+l] = Img[i*3*nWR+j];
-      ImgP[k*3*nWP+l+1] = Img[i*3*nWR+j+1];
-      ImgP[k*3*nWP+l+2] = Img[i*3*nWR+j+2];
     }
+    k++;
   }
 
   //ecrire_image_ppm(cNomImgEcrite, ImgP, nHP, nWP);
@@ -228,12 +230,9 @@ int main(int argc, char* argv[])
     k++;
   }
   
-  //ecrire_image_ppm(cNomImgEcrite, ImgOut, nHPN, nWPN);
+  ecrire_image_ppm(cNomImgEcrite, ImgOut, nHPN, nWPN);
 
-  free(ImgIn);
-
-  
-  
+  free(ImgIn);  
   return 1;
 }
 
