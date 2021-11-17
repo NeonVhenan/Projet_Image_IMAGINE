@@ -124,12 +124,10 @@ int main(int argc, char* argv[])
   xn[0].val = cos(k*acos(x0));
   xn[0].pos = 0;
   
-  printf("%f\n", xn[0].val);
   
   for(int i = 1; i < nTaille8/(N*N); i++){
     xn[i].val = cos(k*acos(xn[i-1].val));
     xn[i].pos = i;
-    printf("%f\n", xn[i].val);
   }
 
   qsort(xn, nTaille8/(N*N), sizeof(tab), compare);

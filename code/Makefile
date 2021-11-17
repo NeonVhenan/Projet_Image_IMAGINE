@@ -8,14 +8,14 @@ recalage.o : recalage.c
 dechiffrement : dechiffrement.o image_ppm.o
 	gcc dechiffrement.o image_ppm.o -o dechiffrement -lm
 
-dechiffrement.o : dechiffrement.c
+dechiffrement.o : dechiffrement.c image_ppm.h
 	gcc dechiffrement.c -c -lm
 
 
 chiffrement : chiffrement.o image_ppm.o
 	gcc chiffrement.o image_ppm.o -o chiffrement -lm
 
-chiffrement.o : chiffrement.c
+chiffrement.o : chiffrement.c image_ppm.h
 	gcc chiffrement.c -c -lm
 
 
@@ -27,11 +27,11 @@ psnr.o : psnr.c
 
 
 
-gradient_couleur : gradient_couleur.o image_ppm.o
-	gcc gradient_couleur.o image_ppm.o -o gradient_couleur -lm
+gradient : gradient.o image_ppm.o
+	gcc gradient.o image_ppm.o -o gradient -lm
 
-gradient_couleur.o : gradient_couleur.c
-	gcc gradient_couleur.c -c -lm
+gradient.o : gradient.c
+	gcc gradient.c -c -lm
 
 image_ppm.o : image_ppm.c image_ppm.h
 	gcc image_ppm.c -c -lm
@@ -39,4 +39,4 @@ image_ppm.o : image_ppm.c image_ppm.h
 
 clean :
 	rm -rf *.o
-	rm -f chiffrement dechiffrement recalage psnr gradient_couleur
+	rm -f chiffrement dechiffrement recalage psnr gradient

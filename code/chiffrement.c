@@ -125,12 +125,10 @@ int main(int argc, char* argv[])
   xn[0].val = cos(k*acos(x0));
   xn[0].pos = 0;
   
-  printf("%f\n", xn[0].val);
   
   for(int i = 1; i < nTaille8/(N*N); i++){
     xn[i].val = cos(k*acos(xn[i-1].val));
     xn[i].pos = i;
-    printf("%f\n", xn[i].val);
   }
 
   qsort(xn, nTaille8/(N*N), sizeof(tab), compare);
@@ -164,7 +162,6 @@ int main(int argc, char* argv[])
       ImgOut[i*nW8*3+j] = ImgR8[i*nW8+j8];
       ImgOut[i*nW8*3+j+1] = ImgG8[i*nW8+j8];
       ImgOut[i*nW8*3+j+2] = ImgB8[i*nW8+j8];
-      //printf("%d %d %d\n", ImgR8[i*nW8+j8], ImgG8[i*nW8+j8], ImgB8[i*nW8+j8]);
       j8++;
     }
   }
