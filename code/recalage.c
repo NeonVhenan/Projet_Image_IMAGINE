@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
   int xp2, yp2;
   int xp3, yp3;
   int k, l;
-  int tailleBloc, valMoy;
+  int tailleBloc, valMoy, valMoyI, valMoyJ;
   
   
   if (argc != 3){
@@ -152,18 +152,20 @@ int main(int argc, char* argv[])
   //ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
 
   k = nHC-1;
-  l = 3*(nW-1);
+  l = 3*(nWC-1);
+  
   while(ImgCadre[k*nWC*3+l] > 7 && ImgCadre[k*nWC*3+l+1] > 7 && ImgCadre[k*nWC*3+l+2] > 7){
     l-=3;
   }
 
   k = nHC-1;
-  while(ImgCadre[k*nWC*3+l] > 7 && ImgCadre[k*nWC*3+l+1] > 7 && ImgCadre[k*nWC*3+l+2] > 7){
+  while(ImgCadre[k*nWC*3+l] <= 7 && ImgCadre[k*nWC*3+l+1] <= 7 && ImgCadre[k*nWC*3+l+2] <= 7){
     k--;
   }
+  printf("%d, %d\n", l, k);
 
   tailleBloc = k-1;
-  while(ImgCadre[k*nWC*3+l] <= 7 && ImgCadre[k*nWC*3+l+1] <= 7 && ImgCadre[k*nWC*3+l+2] <= 7){
+  while(ImgCadre[k*nWC*3+l] > 7 && ImgCadre[k*nWC*3+l+1] > 7 && ImgCadre[k*nWC*3+l+2] > 7){
     k--;
   }
   
@@ -174,9 +176,13 @@ int main(int argc, char* argv[])
 
 
   /**********************************IMAGE AVEC UN PIXEL PAR COULEUR**********************************/
-  
+
   nHP = nHR/tailleBloc;
+  if(nHR % tailleBloc != 0)
+    nHP++;   
   nWP = nWR/tailleBloc;
+  if(nWR % tailleBloc != 0)
+    nWP++;
   
   if(tailleBloc % 2 == 0)
     valMoy = tailleBloc/2;
@@ -187,13 +193,15 @@ int main(int argc, char* argv[])
   nTailleP = nHP * nWP;
   nTaille3P = 3 * nTailleP;
 
+  int cpH = 0;
+  int cpW = 0;
+
   allocation_tableau(ImgP, OCTET, nTaille3P);
 
   k = 0;
-  for(int i = 1; i < nHP*tailleBloc ; i+=tailleBloc){
+  for(int i = 0; i+tailleBloc < nHR ; i+=tailleBloc){
     l = 0;
-    for(int j = 3; j < nWP*tailleBloc*3; j+=3*tailleBloc){
-      printf("%d %d %d\n", Img[(i+valMoy)*3*nWR+j+valMoy*3], Img[(i+valMoy)*3*nWR+j+1+valMoy*3], Img[(i+valMoy)*3*nWR+j+2+valMoy*3]);
+    for(int j = 0; j+3*tailleBloc < nWR*3; j+=3*tailleBloc){
       ImgP[k*3*nWP+l] = Img[(i+valMoy)*3*nWR+j+valMoy*3];
       ImgP[k*3*nWP+l+1] = Img[(i+valMoy)*3*nWR+j+1+valMoy*3];
       ImgP[k*3*nWP+l+2] = Img[(i+valMoy)*3*nWR+j+2+valMoy*3];
@@ -201,6 +209,48 @@ int main(int argc, char* argv[])
     }
     k++;
   }
+  
+  if(tailleBloc * nHP > nHR){
+    l = 0;
+    if((tailleBloc * nHP - nHR)%2 == 0)
+      valMoyI = (tailleBloc * nHP - nHR)/2;
+    else
+      valMoyI = (tailleBloc * nHP - nHR + 1)/2;
+    for(int j = 0; j+3*tailleBloc < nWR*3; j+=3*tailleBloc){
+      ImgP[(nHP-1)*3*nWP+l] = Img[((nHP-1)*tailleBloc+valMoyI)*3*nWR+j+valMoy*3];
+      ImgP[(nHP-1)*3*nWP+l+1] = Img[((nHP-1)*tailleBloc+valMoyI)*3*nWR+j+1+valMoy*3];
+      ImgP[(nHP-1)*3*nWP+l+2] = Img[((nHP-1)*tailleBloc+valMoyI)*3*nWR+j+2+valMoy*3];
+      l+=3;
+    }
+  }
+  if(tailleBloc * nWP > nWR){
+    k = 0;
+    if((tailleBloc * nWP - nWR)%2 == 0)
+      valMoyJ = (tailleBloc * nWP - nHR)/2;
+    else
+      valMoyJ = (tailleBloc * nHP - nHR + 1)/2;
+    for(int i = 0; i+tailleBloc < nHR; i+=tailleBloc){
+      ImgP[k*3*nWP+(nWP-1)*3] = Img[(i+valMoy)*3*nWR+(((nWP-1)*tailleBloc)+valMoyJ)*3];
+      ImgP[k*3*nWP+(nWP-1)*3+1] = Img[(i+valMoy)*3*nWR+(((nWP-1)*tailleBloc)+valMoyJ)*3+1];
+      ImgP[k*3*nWP+(nWP-1)*3+2] = Img[(i+valMoy)*3*nWR+(((nWP-1)*tailleBloc)+valMoyJ)*3+2];
+      k++;
+    }
+  }
+  if(tailleBloc * nWP > nWR && tailleBloc * nHP > nHR){
+    if((tailleBloc * nHP - nHR)%2 == 0)
+      valMoyI = (tailleBloc * nHP - nHR)/2;
+    else
+      valMoyI = (tailleBloc * nHP - nHR + 1)/2;
+    if((tailleBloc * nWP - nWR)%2 == 0)
+      valMoyJ = (tailleBloc * nWP - nHR)/2;
+    else
+      valMoyJ = (tailleBloc * nHP - nHR + 1)/2;
+
+    ImgP[(nHP-1)*3*nWP+(nWP-1)*3] = Img[((nHP-1)*tailleBloc+valMoyI)*3*nWR+(((nWP-1)*tailleBloc)+valMoyJ)*3];
+    ImgP[(nHP-1)*3*nWP+(nWP-1)*3+1] = Img[((nHP-1)*tailleBloc+valMoyI)*3*nWR+(((nWP-1)*tailleBloc)+valMoyJ)*3+1];
+    ImgP[(nHP-1)*3*nWP+(nWP-1)*3+2] = Img[((nHP-1)*tailleBloc+valMoyI)*3*nWR+(((nWP-1)*tailleBloc)+valMoyJ)*3+2];
+  }
+      
 
   //ecrire_image_ppm(cNomImgEcrite, ImgP, nHP, nWP);
 
@@ -232,7 +282,10 @@ int main(int argc, char* argv[])
   
   ecrire_image_ppm(cNomImgEcrite, ImgOut, nHPN, nWPN);
 
-  free(ImgIn);  
+  free(ImgIn);
+  free(ImgCadre);
+  free(Img);
+  free(ImgP);  
   return 1;
 }
 

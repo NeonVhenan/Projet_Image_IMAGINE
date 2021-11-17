@@ -60,14 +60,6 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgGbloc, OCTET, nTaille8/(N*N));
   allocation_tableau(ImgBbloc, OCTET, nTaille8/(N*N));
 
-  allocation_tableau(ImgRchiffr, OCTET, nTaille8/(N*N));
-  allocation_tableau(ImgGchiffr, OCTET, nTaille8/(N*N));
-  allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
-
-  allocation_tableau(ImgR8, OCTET, nTaille8);
-  allocation_tableau(ImgG8, OCTET, nTaille8);
-  allocation_tableau(ImgB8, OCTET, nTaille8);
-
  
   for(int i = 0; i < nH; i++){
     j8 = 0;
@@ -121,6 +113,11 @@ int main(int argc, char* argv[])
     }
     i8++;
   }
+  
+  allocation_tableau(ImgRchiffr, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgGchiffr, OCTET, nTaille8/(N*N));
+  allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
+
 
   printf("Etape 2\n");
 
@@ -147,6 +144,14 @@ int main(int argc, char* argv[])
   }
 
   printf("Etape 5\n");
+  
+  free(ImgRbloc);
+  free(ImgBbloc);
+  free(ImgGbloc);
+  
+  allocation_tableau(ImgR8, OCTET, nTaille8);
+  allocation_tableau(ImgG8, OCTET, nTaille8);
+  allocation_tableau(ImgB8, OCTET, nTaille8);
 
   i8 = 0;
   for(int i = 0; i < nH8; i+=N){
@@ -181,7 +186,5 @@ int main(int argc, char* argv[])
   ecrire_image_ppm(cNomImgEcrite, ImgOut, nH8, nW8);
   
   printf("Etape 8\n");
-
-  free(ImgIn); 
   return 1;
 }

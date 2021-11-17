@@ -52,6 +52,8 @@ int main(int argc, char* argv[])
   nW8 = nW;
   if(nW % N != 0)
     nW8 = nW + (N - (nW % N));
+    
+  printf("++++++++++++++++++++++++++%d %d+++++++++++++++++++++++++\n", nH8/N, nW8/N);
   nTaille8 = nH8 * nW8;
   nTaille38 = nTaille8 * 3;
     
