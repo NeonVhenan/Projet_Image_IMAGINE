@@ -137,10 +137,6 @@ int main(int argc, char* argv[])
 
 
   for(int i = 0; i < nTaille8/(N*N); i++){
-    printf("%f            %d\n", xn[i].val, xn[i].pos);
-  }
-
-  for(int i = 0; i < nTaille8/(N*N); i++){
     ImgRchiffr[i] = ImgRbloc[xn[i].pos];
     ImgGchiffr[i] = ImgGbloc[xn[i].pos];
     ImgBchiffr[i] = ImgBbloc[xn[i].pos];

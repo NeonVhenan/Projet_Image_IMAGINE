@@ -134,11 +134,6 @@ int main(int argc, char* argv[])
 
   qsort(xn, nTaille8/(N*N), sizeof(tab), compare);
 
-
-  for(int i = 0; i < nTaille8/(N*N); i++){
-    printf("%f            %d\n", xn[i].val, xn[i].pos);
-  }
-
   for(int i = 0; i < nTaille8/(N*N); i++){
     ImgRchiffr[xn[i].pos] = ImgRbloc[i];
     ImgGchiffr[xn[i].pos] = ImgGbloc[i];
