@@ -94,9 +94,10 @@ int main(int argc, char* argv[])
       ImgCadre[i*3*nWC+j] = ImgIn[(i+xp1)*3*nW+j+yp1];
       ImgCadre[i*3*nWC+j+1] = ImgIn[(i+xp1)*3*nW+j+1+yp1];
       ImgCadre[i*3*nWC+j+2] = ImgIn[(i+xp1)*3*nW+j+2+yp1];
-      ;
     }
   }
+
+  //ecrire_image_ppm(cNomImgEcrite, ImgCadre, nHC, nWC);
 
   /**********************************IMAGE SANS CADRE**********************************/
 
@@ -147,6 +148,9 @@ int main(int argc, char* argv[])
     }
   }
 
+  //ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
+  
+
   /**********************************IMAGE AVEC UN PIXEL PAR COULEUR**********************************/
   
   nHP = 1;
@@ -196,7 +200,7 @@ int main(int argc, char* argv[])
     }
   }
 
-  ecrire_image_ppm(cNomImgEcrite, ImgP, nHP, nWP);
+  //ecrire_image_ppm(cNomImgEcrite, ImgP, nHP, nWP);
 
 
   /**********************************IMAGE AVEC UN BLOC PAR COULEUR**********************************/

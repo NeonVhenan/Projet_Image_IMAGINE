@@ -26,10 +26,17 @@ psnr.o : psnr.c
 	gcc psnr.c -c -lm
 
 
+
+gradient_couleur : gradient_couleur.o image_ppm.o
+	gcc gradient_couleur.o image_ppm.o -o gradient_couleur -lm
+
+gradient_couleur.o : gradient_couleur.c
+	gcc gradient_couleur.c -c -lm
+
 image_ppm.o : image_ppm.c image_ppm.h
 	gcc image_ppm.c -c -lm
 
 
 clean :
 	rm -rf *.o
-	rm -f chiffrement dechiffrement recalage psnr
+	rm -f chiffrement dechiffrement recalage psnr gradient_couleur
