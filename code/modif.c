@@ -24,85 +24,650 @@ int main(int argc, char* argv[])
   nTaille = nH * nW;
   nTaille3 = 3 * nTaille;
   
-  nT = (nH + 4*N)*(nW+4*N);
+  nT = (nH + 20*N)*(nW+20*N);
   nT3 = nT * 3;
   allocation_tableau(ImgIn, OCTET, nTaille3);
   lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
   allocation_tableau(ImgOut, OCTET, nT3);
 
 
-  for(int i = 0; i < 2*N; i++){
-    for(int j = 0; j < 3*(nW+4*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 0;
-      ImgOut[i*3*(nW+4*N)+j+1] = 0;
-      ImgOut[i*3*(nW+4*N)+j+2] = 0;
+  for(int i = 0; i < 10*N; i++){
+    for(int j = 0; j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
     }
   }
 
   int k = 0;
   int l;
-  for(int i = 2*N; i < 2*N+nH; i++){
-    for(int j = 0; j < 3*(2*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 0;
-      ImgOut[i*3*(nW+4*N)+j+1] = 0;
-      ImgOut[i*3*(nW+4*N)+j+2] = 0;
+  for(int i = 10*N; i < 10*N+nH; i++){
+    for(int j = 0; j < 3*(10*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
     }
     l = 0;
-    for(int j = 3*(2*N); j < 3*(nW+2*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = ImgIn[k*3*nW+l];
-      ImgOut[i*3*(nW+4*N)+j+1] = ImgIn[k*3*nW+l+1];
-      ImgOut[i*3*(nW+4*N)+j+2] = ImgIn[k*3*nW+l+2];
+    for(int j = 3*(10*N); j < 3*(nW+10*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = ImgIn[k*3*nW+l];
+      ImgOut[i*3*(nW+20*N)+j+1] = ImgIn[k*3*nW+l+1];
+      ImgOut[i*3*(nW+20*N)+j+2] = ImgIn[k*3*nW+l+2];
       l+=3;
     }
-    for(int j = 3*(nW+2*N); j < 3*(nW+4*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 0;
-      ImgOut[i*3*(nW+4*N)+j+1] = 0;
-      ImgOut[i*3*(nW+4*N)+j+2] = 0;
+    for(int j = 3*(nW+10*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
     }
     k++;
   }
 
-  for(int i = nH+2*N; i < nH+4*N; i++){
-    for(int j = 0; j < 3*(nW+2*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 0;
-      ImgOut[i*3*(nW+4*N)+j+1] = 0;
-      ImgOut[i*3*(nW+4*N)+j+2] = 0;
-    }
-  }
-  
-  for(int i = nH+2*N; i < nH+3*N; i++){
-    for(int j = 3*(nW+2*N); j < 3*(nW+3*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 255;
-      ImgOut[i*3*(nW+4*N)+j+1] = 255;
-      ImgOut[i*3*(nW+4*N)+j+2] = 255;
-    }
-  }
-  for(int i = nH+3*N; i < nH+4*N; i++){
-    for(int j = 3*(nW+2*N); j < 3*(nW+3*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 0;
-      ImgOut[i*3*(nW+4*N)+j+1] = 0;
-      ImgOut[i*3*(nW+4*N)+j+2] = 0;
+  for(int i = nH+10*N; i < nH+20*N; i++){
+    for(int j = 0; j < 3*(nW+10*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
     }
   }
 
-  for(int i = nH+2*N; i < nH+3*N; i++){
-    for(int j = 3*(nW+3*N); j < 3*(nW+4*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 0;
-      ImgOut[i*3*(nW+4*N)+j+1] = 0;
-      ImgOut[i*3*(nW+4*N)+j+2] = 0;
+  for(int i = nH+10*N; i < nH+11*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
     }
   }
-  for(int i = nH+3*N; i < nH+4*N; i++){
-    for(int j = 3*(nW+3*N); j < 3*(nW+4*N); j+=3){
-      ImgOut[i*3*(nW+4*N)+j] = 255;
-      ImgOut[i*3*(nW+4*N)+j+1] = 255;
-      ImgOut[i*3*(nW+4*N)+j+2] = 255;
+  //ligne 11-12
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
     }
   }
-  
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+11*N; i < nH+12*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+  //ligne 12-13
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+12*N; i < nH+13*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+
+  //ligne 13-14
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+13*N; i < nH+14*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+  //ligne 14-15
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+14*N; i < nH+15*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+
+  //ligne 15-16
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+15*N; i < nH+16*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+  //ligne 16-17
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+16*N; i < nH+17*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+
+
+  //ligne 17-18
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+17*N; i < nH+18*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+  //ligne 18-19
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+11*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+11*N); j < 3*(nW+12*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+12*N); j < 3*(nW+13*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+13*N); j < 3*(nW+14*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+14*N); j < 3*(nW+15*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+15*N); j < 3*(nW+16*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+16*N); j < 3*(nW+17*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+17*N); j < 3*(nW+18*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+18*N); j < 3*(nW+19*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 255;
+      ImgOut[i*3*(nW+20*N)+j+1] = 255;
+      ImgOut[i*3*(nW+20*N)+j+2] = 255;
+    }
+  }
+  for(int i = nH+18*N; i < nH+19*N; i++){
+    for(int j = 3*(nW+19*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
+
+
+  for(int i = nH+19*N; i < nH+20*N; i++){
+    for(int j = 3*(nW+10*N); j < 3*(nW+20*N); j+=3){
+      ImgOut[i*3*(nW+20*N)+j] = 0;
+      ImgOut[i*3*(nW+20*N)+j+1] = 0;
+      ImgOut[i*3*(nW+20*N)+j+2] = 0;
+    }
+  }
   
 
-  ecrire_image_ppm(cNomImgEcrite, ImgOut, nH + 4*N, nW+4*N);
+  ecrire_image_ppm(cNomImgEcrite, ImgOut, nH + 20*N, nW+20*N);
   free(ImgIn);
   return 1;
 }
