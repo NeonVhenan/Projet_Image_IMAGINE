@@ -270,7 +270,6 @@ int main(int argc, char* argv[])
     }
   }
   if(tailleBloc * nWP >= nWR){
-    printf("test\n");
     k = 0;
     if((tailleBloc * nWP - nWR)%2 == 0)
       valMoyJ = (tailleBloc * nWP - nHR)/2;
@@ -284,7 +283,6 @@ int main(int argc, char* argv[])
     }
   }
   if(tailleBloc * nWP >= nWR && tailleBloc * nHP >= nHR){
-    printf("test\n");
     ImgP[(nHP-1)*3*nWP+(nWP-1)*3] = Img[((nHP-1)*tailleBloc)*3*nWR+((nWP-1)*tailleBloc)*3];
     ImgP[(nHP-1)*3*nWP+(nWP-1)*3+1] = Img[((nHP-1)*tailleBloc)*3*nWR+((nWP-1)*tailleBloc)*3+1];
     ImgP[(nHP-1)*3*nWP+(nWP-1)*3+2] = Img[((nHP-1)*tailleBloc)*3*nWR+((nWP-1)*tailleBloc)*3+2];

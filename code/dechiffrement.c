@@ -71,8 +71,6 @@ int main(int argc, char* argv[])
     }
   }
 
-  printf("Etape 1\n");
-
   i8 = 0;
   for(int i = 0; i < nH; i+=N){
     j8 = 0;
@@ -119,8 +117,6 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
 
 
-  printf("Etape 2\n");
-
   xn = malloc(sizeof(double)*nTaille8/(N*N));
   xn[0].val = cos(k*acos(x0));
   xn[0].pos = 0;
@@ -131,19 +127,13 @@ int main(int argc, char* argv[])
     xn[i].pos = i;
   }
 
-  printf("Etape 3\n");
-
   qsort(xn, nTaille8/(N*N), sizeof(tab), compare);
-
-  printf("Etape 4\n");
 
   for(int i = 0; i < nTaille8/(N*N); i++){
     ImgRchiffr[xn[i].pos] = ImgRbloc[i];
     ImgGchiffr[xn[i].pos] = ImgGbloc[i];
     ImgBchiffr[xn[i].pos] = ImgBbloc[i];
   }
-
-  printf("Etape 5\n");
   
   free(ImgRbloc);
   free(ImgBbloc);
@@ -169,8 +159,6 @@ int main(int argc, char* argv[])
     i8++;
   }
 
-  printf("Etape 6\n");
-
   for(int i = 0; i < nH8; i++){
     j8 = 0;
     for(int j = 0; j < nW8*3; j+=3){
@@ -181,10 +169,7 @@ int main(int argc, char* argv[])
     }
   }
   
-  printf("Etape 7\n");
-  
   ecrire_image_ppm(cNomImgEcrite, ImgOut, nH8, nW8);
   
-  printf("Etape 8\n");
   return 1;
 }
