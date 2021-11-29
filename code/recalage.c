@@ -4,7 +4,7 @@
 
 #define test 40
 
-#define test2 40
+#define test2 50
 
 void usage(char * s){
   printf("Usage : %s ImageIn.pgm ImageOut.pgm\n", s);
@@ -60,9 +60,9 @@ int main(int argc, char* argv[])
   
   k = 0;
   l = 0;
-  while(ImgIn[k*nW*3+l] > test || ImgIn[k*nW*3+l+1] > test || ImgIn[k*nW*3+l+2] > test){
+  while(ImgIn[k*nW*3+l] > test || ImgIn[k*nW*3+l+1] > test){ //&& ImgIn[k*nW*3+l+2] > test){
     l+=3;
-    if(l >= nW){
+    if(l > (nW-1)*3){
       l = 0;
       k++;
     }
@@ -71,28 +71,40 @@ int main(int argc, char* argv[])
   xp1 = k;
   yp1 = l;
 
-  k = xp1;
+  k = xp1+20;
   l = (nW-1)*3;
-  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
+  while(ImgIn[k*nW*3+l] > test || ImgIn[k*nW*3+l+1] > test){ //&& ImgIn[k*nW*3+l+2] > test){
     l-=3;
+    if(l < 3*nW/2){
+      l = (nW-1)*3;
+      k++;
+    }
   }
-
+  
   xp2 = k;
-  yp2 = l-1;
+  yp2 = l-3;
 
-  k = (nH-1);
-  l = yp1;
-  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
+  k = nH-1;
+  l = yp2-7*3;
+  while(ImgIn[k*nW*3+l] > test || ImgIn[k*nW*3+l+1] > test){ //&& ImgIn[k*nW*3+l+2] > test){
     k--;
+    if(k < nH/2){
+      l-=3;
+      k = nH-1;
+    }
   }
 
   xp3 = k-1;
   yp3 = l;
 
+  printf("(%d %d)    %d %d   %d %d  %d %d\n",nH, 3*nW, xp1, yp1, xp2, yp2, xp3, yp3);
+  
+
   nHC = xp3 - xp1;
   nWC = (yp2 - yp1)/3;
   nTailleC = nHC * nWC;
   nTaille3C = 3* nTailleC;
+  printf("why?\n");
 
   allocation_tableau(ImgCadre, OCTET, nTaille3C);
 
@@ -103,10 +115,10 @@ int main(int argc, char* argv[])
       ImgCadre[i*3*nWC+j+2] = ImgIn[(i+xp1)*3*nW+j+2+yp1];
     }
   }
-  printf("%d %d   %d %d  %d %d\n", xp1, yp1, xp2, yp2, xp3, yp3);
   
-
   //ecrire_image_ppm(cNomImgEcrite, ImgCadre, nHC, nWC);
+
+  printf("why?\n");
 
   /**********************************IMAGE SANS CADRE**********************************/
 
@@ -114,9 +126,9 @@ int main(int argc, char* argv[])
   l = 0;
   while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2 && ImgCadre[k*nWC*3+l+2] <= test2){
     l+=3;
-    if(l >= 3*nWC/4){
-      l = 0;
+    if(l >= 3*(nW/4)){
       k++;
+      l= 0;
     }
   }
 
@@ -163,7 +175,7 @@ int main(int argc, char* argv[])
   
   printf("%d %d   %d %d  %d %d\n", xp1, yp1, xp2, yp2, xp3, yp3);
 
-  //ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
+  ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
 
   k = nHC-1;
   l = 3*(nWC-1);
@@ -311,7 +323,7 @@ int main(int argc, char* argv[])
     k++;
   }
   
-  ecrire_image_ppm(cNomImgEcrite, ImgOut, nHPN, nWPN);
+  //ecrire_image_ppm(cNomImgEcrite, ImgOut, nHPN, nWPN);
 
   free(ImgIn);
   free(ImgCadre);
