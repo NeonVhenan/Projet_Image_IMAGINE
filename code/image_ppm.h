@@ -21,7 +21,7 @@ if( (nom = (type*) calloc (nombre, sizeof(type) ) ) == NULL ) \
 }
 
 
-#define N 16
+#define N 32
 
 
 typedef unsigned char OCTET;

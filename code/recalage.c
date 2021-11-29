@@ -2,7 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define test 17
+#define test 40
+
+#define test2 40
 
 void usage(char * s){
   printf("Usage : %s ImageIn.pgm ImageOut.pgm\n", s);
@@ -32,6 +34,7 @@ int main(int argc, char* argv[])
   int xp3, yp3;
   int k, l;
   int tailleBloc, valMoy, valMoyI, valMoyJ;
+  int nbBlocs;
   
   
   if (argc != 3){
@@ -69,18 +72,18 @@ int main(int argc, char* argv[])
   yp1 = l;
 
   k = xp1;
-  l = yp1;
-  while(ImgIn[k*nW*3+l] <= test && ImgIn[k*nW*3+l+1] <= test && ImgIn[k*nW*3+l+2] <= test){
-    l+=3;
+  l = (nW-1)*3;
+  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
+    l-=3;
   }
 
   xp2 = k;
   yp2 = l-1;
 
-  k = xp1;
+  k = (nH-1);
   l = yp1;
-  while(ImgIn[k*nW*3+l] <= test && ImgIn[k*nW*3+l+1] <= test && ImgIn[k*nW*3+l+2] <= test){
-    k++;
+  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
+    k--;
   }
 
   xp3 = k-1;
@@ -100,6 +103,8 @@ int main(int argc, char* argv[])
       ImgCadre[i*3*nWC+j+2] = ImgIn[(i+xp1)*3*nW+j+2+yp1];
     }
   }
+  printf("%d %d   %d %d  %d %d\n", xp1, yp1, xp2, yp2, xp3, yp3);
+  
 
   //ecrire_image_ppm(cNomImgEcrite, ImgCadre, nHC, nWC);
 
@@ -107,21 +112,21 @@ int main(int argc, char* argv[])
 
   k = 0;
   l = 0;
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
+  while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2 && ImgCadre[k*nWC*3+l+2] <= test2){
     l+=3;
-    if(l >= nWC){
+    if(l >= 3*nWC/4){
       l = 0;
       k++;
     }
   }
 
-  xp1 = k+1;
+  xp1 = k;
   yp1 = l;
 
   
   k = xp1;
   l = 3*(nWC-1);
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
+  while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2 && ImgCadre[k*nWC*3+l+2] <= test2){
     l-=3;
   }
 
@@ -129,9 +134,13 @@ int main(int argc, char* argv[])
   yp2 = l;
   
   k = nHC-1;
-  l = yp1;
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
+  l = 0;
+  while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2 && ImgCadre[k*nWC*3+l+2] <= test2){	
     k--;
+    if(k < nH/2){
+      l+=3;
+      k = nHC-1;
+    }
   }
 
   xp3 = k-1;
@@ -151,6 +160,8 @@ int main(int argc, char* argv[])
       Img[i*3*nWR+j+2] = ImgCadre[(i+xp1)*3*nWC+j+2+yp1];
     }
   }
+  
+  printf("%d %d   %d %d  %d %d\n", xp1, yp1, xp2, yp2, xp3, yp3);
 
   //ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
 
@@ -159,66 +170,49 @@ int main(int argc, char* argv[])
   
   while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
     l-=3;
-    if(l < 3*(nWC)/2){
+    if(l < 3*3*(nWC)/4){
       k--;
       l = 3*(nWC-1);
     }
   }
+  
 
-  while(ImgCadre[k*nWC*3+l] > test && ImgCadre[k*nWC*3+l+1] > test && ImgCadre[k*nWC*3+l+2] > test){
-    l-=3;
+  while(ImgCadre[k*nWC*3+l] > test2 && ImgCadre[k*nWC*3+l+1] > test2 && ImgCadre[k*nWC*3+l+2] > test2){
+    k--;
   }
 
+  nbBlocs = 0;
   int somme = 0;
   tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
+  while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2 && ImgCadre[k*nWC*3+l+2] <= test2){
     k--;
   }
   somme += tailleBloc-k;
+  nbBlocs++;
 
-  tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] > test && ImgCadre[k*nWC*3+l+1] > test && ImgCadre[k*nWC*3+l+2] > test){
-    k--;
+  int testBloc = 0;
+  while(testBloc != 1 && k > 3*nH/4){
+    tailleBloc = k;
+    while(ImgCadre[k*nWC*3+l] > test2 && ImgCadre[k*nWC*3+l+1] > test2 && ImgCadre[k*nWC*3+l+2] > test2){
+      k--;
+    }
+    somme += tailleBloc-k;
+    nbBlocs++;
+
+    tailleBloc = k;
+    while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2 && ImgCadre[k*nWC*3+l+2] <= test2){
+      k--;
+    }
+    if(tailleBloc - k > 10)
+      testBloc = 1;
+    else{
+      somme += tailleBloc-k;
+      nbBlocs++;
+    }
+    printf("hello %d\n", nbBlocs);
   }
-  somme += tailleBloc-k;
 
-  tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
-    k--;
-  }
-  somme += tailleBloc-k;
-
-  tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] > test && ImgCadre[k*nWC*3+l+1] > test && ImgCadre[k*nWC*3+l+2] > test){
-    k--;
-  }
-  somme += tailleBloc-k;
-
-  tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
-    k--;
-  }
-  somme += tailleBloc-k;
-
-  tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] > test && ImgCadre[k*nWC*3+l+1] > test && ImgCadre[k*nWC*3+l+2] > test){
-    k--;
-  }
-  somme += tailleBloc-k;
-
-  tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
-    k--;
-  }
-  somme += tailleBloc-k;
-
-  tailleBloc = k;
-  while(ImgCadre[k*nWC*3+l] > test && ImgCadre[k*nWC*3+l+1] > test && ImgCadre[k*nWC*3+l+2] > test){
-    k--;
-  }
-  somme += tailleBloc-k;
-
-  tailleBloc = somme/8;
+  tailleBloc = somme/nbBlocs;
   
   printf("taille bloc : %d\n", tailleBloc);
 
