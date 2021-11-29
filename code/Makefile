@@ -32,16 +32,10 @@ modif : modif.o image_ppm.o
 modif.o : modif.c image_ppm.h
 	gcc modif.c -c -lm
 
-gradient : gradient.o image_ppm.o
-	gcc gradient.o image_ppm.o -o gradient -lm
-
-gradient.o : gradient.c
-	gcc gradient.c -c -lm
-
 image_ppm.o : image_ppm.c image_ppm.h
 	gcc image_ppm.c -c -lm
 
 
 clean :
 	rm -rf *.o
-	rm -f chiffrement dechiffrement recalage psnr modif gradient
+	rm -f chiffrement dechiffrement recalage psnr modif
