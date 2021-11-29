@@ -123,10 +123,11 @@ int main(int argc, char* argv[])
     i8++;
   }
 
-  xn = malloc(sizeof(double)*nTaille8/(N*N));
+  xn = malloc(sizeof(tab)*nTaille8/(N*N));
   xn[0].val = cos(k*acos(x0));
   xn[0].pos = 0;
   
+  //printf("why???????????\n");
   
   for(int i = 1; i < nTaille8/(N*N); i++){
     xn[i].val = cos(k*acos(xn[i-1].val));
@@ -134,7 +135,6 @@ int main(int argc, char* argv[])
   }
 
   qsort(xn, nTaille8/(N*N), sizeof(tab), compare);
-
 
   for(int i = 0; i < nTaille8/(N*N); i++){
     ImgRchiffr[i] = ImgRbloc[xn[i].pos];
@@ -157,6 +157,7 @@ int main(int argc, char* argv[])
     }
     i8++;
   }
+  
 
   for(int i = 0; i < nH8; i++){
     j8 = 0;
@@ -167,6 +168,7 @@ int main(int argc, char* argv[])
       j8++;
     }
   }
+  
   
   ecrire_image_ppm(cNomImgEcrite, ImgOut, nH8, nW8);
 

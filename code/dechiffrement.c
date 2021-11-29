@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
   allocation_tableau(ImgBchiffr, OCTET, nTaille8/(N*N));
 
 
-  xn = malloc(sizeof(double)*nTaille8/(N*N));
+  xn = malloc(sizeof(tab)*nTaille8/(N*N));
   xn[0].val = cos(k*acos(x0));
   xn[0].pos = 0;
   
