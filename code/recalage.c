@@ -2,11 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define test 70
+#define test 25
 #define test2 50
-#define test3 51
+#define test3 60
 #define test4 75
-#define test5 40
+#define test5 60
 
 void usage(char * s){
   printf("Usage : %s ImageIn.pgm ImageOut.pgm\n", s);
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
   int xp2, yp2;
   int xp3, yp3;
   int k, l;
-  int tailleBlocH, tailleBlocW, valMoyH, valMoyW, valMoyI, valMoyJ;
+  int tailleBloc, valMoy, valMoyI, valMoyJ;
   int nbBlocs;
   
   
@@ -61,9 +61,9 @@ int main(int argc, char* argv[])
   
   k = 0;
   l = 0;
-  while(ImgIn[k*nW*3+l] > test || ImgIn[k*nW*3+l+1] > test || ImgIn[k*nW*3+l+2] > test){
+  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
     l+=3;
-    if(l > (nW-1)*3){
+    if(l > ((nW)/4)*3){
       l = 0;
       k++;
     }
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 
   k = xp1;
   l = (nW-1)*3;
-  while(ImgIn[k*nW*3+l] > test || ImgIn[k*nW*3+l+1] > test || ImgIn[k*nW*3+l+2] > test){
+  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
     l-=3;
     if(l < 3*(nW/2)){
       l = (nW-1)*3;
@@ -83,18 +83,14 @@ int main(int argc, char* argv[])
   }
   
   xp2 = k;
-  yp2 = l-3;
-
-  if(xp2 > xp1){
-    xp1 = xp2;
-  }
+  yp2 = l;
 
   k = nH-1;
-  l = (nW-1)*3;
-  while(ImgIn[k*nW*3+l] > test || ImgIn[k*nW*3+l+1] > test ||  ImgIn[k*nW*3+l+2] > test){
+  l = 0;
+  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
     k--;
-    if(k < nH/2){
-      l-=3;
+    if(k < 3*nH/4){
+      l+=3;
       k = nH-1;
     }
   }
@@ -102,17 +98,29 @@ int main(int argc, char* argv[])
   xp3 = k-1;
   yp3 = l;
 
+  if(yp3 > yp1)
+    yp1 = yp3;
+    
+  k = nH-1;
+  l = (nW-1)*3;
+  while(ImgIn[k*nW*3+l] > test && ImgIn[k*nW*3+l+1] > test && ImgIn[k*nW*3+l+2] > test){
+    k--;
+    if(k < 3*nH/4){
+      l-=3;
+      k = nH-1;
+    }
+  }
+
+  xp3 = k-1;
+  yp3 = l;
+  
   if(yp3 > yp2)
     yp2 = yp3;
-
-  printf("(%d %d)    %d %d   %d %d  %d %d\n",nH, 3*nW, xp1, yp1, xp2, yp2, xp3, yp3);
-  
 
   nHC = xp3 - xp1;
   nWC = (yp2 - yp1)/3;
   nTailleC = nHC * nWC;
   nTaille3C = 3* nTailleC;
-  printf("why?\n");
 
   allocation_tableau(ImgCadre, OCTET, nTaille3C);
 
@@ -128,48 +136,46 @@ int main(int argc, char* argv[])
 
   /**********************************IMAGE SANS CADRE**********************************/
 
-  k = 0;
-  l = 0;
-  while(ImgCadre[k*nWC*3+l] <= test4 && ImgCadre[k*nWC*3+l+1] <= test4 && ImgCadre[k*nWC*3+l+2] <= test4){
+  k = nH/8;
+  l = 6;
+  while(ImgCadre[k*nWC*3+l] <= test4 || ImgCadre[k*nWC*3+l+1] <= test4 || ImgCadre[k*nWC*3+l+2] <= test4){
     l+=3;
     if(l >= 3*(nW/4)){
       k++;
-      l = 0;
+      l = 3;
     }
   }
 
-  xp1 = k;
   yp1 = l;
-
   
-  k = xp1;
-  l = 3*(nWC-1) - 81;
-  printf("%d %d %d\n", ImgCadre[k*nWC*3+l], ImgCadre[k*nWC*3+l+1], ImgCadre[k*nWC*3+l+2]);
-  while(ImgCadre[k*nWC*3+l] <= test3 || ImgCadre[k*nWC*3+l+1] <= test3 || ImgCadre[k*nWC*3+l+2] <= test3){
+  k = yp1/4;
+  l = (nW/8)*3;
+  while(ImgCadre[k*nWC*3+l] <= test4 || ImgCadre[k*nWC*3+l+1] <= test4 || ImgCadre[k*nWC*3+l+2] <= test4){
+    k++;
+  }
+  
+  xp1 = k;
+  
+  k = nH/4;
+  l = 3*(nWC-1)-yp1/8;
+  while(ImgCadre[k*nWC*3+l] <= test3 && ImgCadre[k*nWC*3+l+1] <= test3){// || ImgCadre[k*nWC*3+l+2] <= test4){
     l-=3;
-    if(l < 3*(3*nW/4)){
-      k++;
-      l = 3*(nWC-1) - 81;
-    }
   }
 
   xp2 = k;
   yp2 = l;
   
-  k = nHC-1;
-  l = 0;
-  while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2){//&& ImgCadre[k*nWC*3+l+2] <= test2){	
+  k = nHC-xp1/2;
+  l = (7*nWC/8)*3;
+  while(ImgCadre[k*nWC*3+l] <= test2 && ImgCadre[k*nWC*3+l+1] <= test2 && ImgCadre[k*nWC*3+l+2] <= test2){	
     k--;
-    if(k < nH/2){
-      l+=3;
-      k = nHC-1;
-    }
   }
 
   xp3 = k-1;
   yp3 = l;
 
   printf("%d %d   %d %d  %d %d\n", xp1, yp1, xp2, yp2, xp3, yp3);
+  
   
   nHR = xp3 - xp1;
   nWR = (yp2 - yp1)/3;
@@ -186,156 +192,86 @@ int main(int argc, char* argv[])
     }
   }
 
-  ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
+  //ecrire_image_ppm(cNomImgEcrite, Img, nHR, nWR);
 
   k = nHC-1;
   l = 3*(nWC-1);
   
-  while(ImgCadre[k*nWC*3+l] <= test && ImgCadre[k*nWC*3+l+1] <= test && ImgCadre[k*nWC*3+l+2] <= test){
-    l-=3;
-    if(l < 3*3*(nWC)/4){
-      k--;
-      l = 3*(nWC-1);
+  while(ImgCadre[k*nWC*3+l] <= test5 || ImgCadre[k*nWC*3+l+1] <= test5 || ImgCadre[k*nWC*3+l+2] <= test5){
+    k--;
+    if(k < xp3){
+      k = nHC-1;
+      l -= 3;
     }
   } 
+  
+  int tmp = l;
 
-  while(ImgCadre[k*nWC*3+l] > test && ImgCadre[k*nWC*3+l+1] > test && ImgCadre[k*nWC*3+l+2] > test2){
-    k--;
+  while(ImgCadre[k*nWC*3+l] > test5 && ImgCadre[k*nWC*3+l+1] > test5 && ImgCadre[k*nWC*3+l+2] > test5){
+    l-=3;
   }
-
-  ImgCadre[k*nWC*3+l] = 255;
-  ImgCadre[k*nWC*3+l+1] = 0;
-  ImgCadre[k*nWC*3+l+2] = 0;
+  
+  tmp = tmp - l;
+  
+  if(tmp%2 == 0)
+    l = l - tmp /2;
+  else
+    l = l - (tmp+1)/2;
 
   nbBlocs = 0;
   int somme = 0;
-  tailleBlocH = k;
-  while(ImgCadre[k*nWC*3+l] <= test5 && ImgCadre[k*nWC*3+l+1] <= test5 && ImgCadre[k*nWC*3+l+2] <= test5){
+  tailleBloc = k;
+  while(ImgCadre[k*nWC*3+l] <= test4 && ImgCadre[k*nWC*3+l+1] <= test4 && ImgCadre[k*nWC*3+l+2] <= test4){
     k--;
   }
-  somme += tailleBlocH-k;
+  somme += tailleBloc-k;
   nbBlocs++;
 
   int testBloc = 0;
   while(testBloc != 1 && k > 3*nH/4){
-    tailleBlocH = k;
+    tailleBloc = k;
     while(ImgCadre[k*nWC*3+l] > test5 && ImgCadre[k*nWC*3+l+1] > test5 && ImgCadre[k*nWC*3+l+2] > test5){
       k--;
     }
-    somme += tailleBlocH-k;
+    somme += tailleBloc-k;
     nbBlocs++;
 
-    tailleBlocH = k;
-    while(ImgCadre[k*nWC*3+l] <= test5 || ImgCadre[k*nWC*3+l+1] <= test5 && ImgCadre[k*nWC*3+l+2] <= test5){
+    tailleBloc = k;
+    while(ImgCadre[k*nWC*3+l] <= test4 || ImgCadre[k*nWC*3+l+1] <= test4 && ImgCadre[k*nWC*3+l+2] <= test4){
       k--;
     }
-    if(tailleBlocH - k > 40)
+    if(k <= xp3)
       testBloc = 1;
     else{
-      somme += tailleBlocH-k;
+      somme += tailleBloc-k;
       nbBlocs++;
     }
-    printf("hello %d\n", nbBlocs);
-  }
-
-  tailleBlocH = somme/nbBlocs;
-  
-  printf("taille bloc : %d\n", tailleBlocH);
-
-
-  k = nHC-1;
-  l = 3*(nWC-1)-21;
-  
-  while(ImgCadre[k*nWC*3+l] <= test || ImgCadre[k*nWC*3+l+1] <= test){// && ImgCadre[k*nWC*3+l+2] <= test){
-    k--;
-    if(k < 7*(nHC)/8){
-      k = nHC - 1;
-      l -= 3;
-    }
-  }
-
-  l-=3;
-  
-  int l_avant = l;
-
-  while(ImgCadre[k*nWC*3+l] > test5 && ImgCadre[k*nWC*3+l+1] > test5){// && ImgCadre[k*nWC*3+l+2] > test){
-    l-=3;
+    //printf("hello %d\n", nbBlocs);
   }
   
-
-  nbBlocs = 0;
-  somme = 0;
-  tailleBlocW = l/3;
-  printf("valeur : %d %d %d\n",ImgCadre[k*nWC*3+l], ImgCadre[k*nWC*3+l+1], ImgCadre[k*nWC*3+l+2]);
-  while(ImgCadre[k*nWC*3+l] <= test || ImgCadre[k*nWC*3+l+1] <= test){// && ImgCadre[k*nWC*3+l+2] <= test){
-    l-=3;
-  }
-  somme += tailleBlocW - l/3;
-  nbBlocs++;
-
-  //printf("diff : %d %d\n", l_avant, l);
-
-  /*ImgCadre[k*nWC*3+l] = 255;
-  ImgCadre[k*nWC*3+l+1] = 255;
-  ImgCadre[k*nWC*3+l+2] = 0;
-
-  ecrire_image_ppm(cNomImgEcrite, ImgCadre, nHC, nWC);*/
-
-  testBloc = 0;
-  while(testBloc != 1 && l > 3*(3*nW/4)){
-    tailleBlocW = l/3;
-    while(ImgCadre[k*nWC*3+l] > test5 && ImgCadre[k*nWC*3+l+1] > test5){// && ImgCadre[k*nWC*3+l+2] > test5){
-      l-=3;
-    }
-    if(tailleBlocW - l/3 < 40){
-      somme += tailleBlocW - l/3;
-      nbBlocs++;
-      tailleBlocW = l/3;
-      while(ImgCadre[k*nWC*3+l] <= test || ImgCadre[k*nWC*3+l+1] <= test){// && ImgCadre[k*nWC*3+l+2] <= test){
-	l-=3;
-      }
-      if(tailleBlocW - l/3 >= 40)
-	testBloc = 1;
-      else{
-	somme += tailleBlocW - l/3;
-	nbBlocs++;
-      }
-      //printf("hello %d\n", nbBlocs);
-    }
-    else
-      testBloc = 1;
-  }
-
-  printf("taille %f\n", somme*1.0/nbBlocs);
+  float x = somme*1.0/nbBlocs;
+  tailleBloc = somme/nbBlocs;
+  if(x - tailleBloc > 0.5)
+    tailleBloc++;
   
-  tailleBlocW = somme/nbBlocs;
-  
-  printf("taille bloc : %d\n", tailleBlocW);
-
-  printf("%d %f\n", nWR, 1.0*nWR/106);
-
-  tailleBlocW = tailleBlocH;
+  printf("taille bloc : %d %f\n", tailleBloc, x);
 
 
 
   /**********************************IMAGE AVEC UN PIXEL PAR COULEUR**********************************/
 
-  nHP = nHR/tailleBlocH;
-  if(nHR % tailleBlocH != 0)
+  nHP = nHR/tailleBloc;
+  if(nHR % tailleBloc != 0)
     nHP++;   
-  nWP = nWR/tailleBlocW;
-  if(nWR % tailleBlocW != 0)
+  nWP = nWR/tailleBloc;
+  if(nWR % tailleBloc != 0)
     nWP++;
   
-  if(tailleBlocH % 2 == 0)
-    valMoyH = tailleBlocH/2;
+  if(tailleBloc % 2 == 0)
+    valMoy = tailleBloc/2;
   else
-    valMoyH = (tailleBlocH+1)/2;
+    valMoy = (tailleBloc+1)/2;
 
-  if(tailleBlocW % 2 == 0)
-    valMoyW = tailleBlocW/2;
-  else
-    valMoyW = (tailleBlocW+1)/2;
   
   printf("%d, %d\n", nHP, nWP);
   nTailleP = nHP * nWP;
@@ -343,48 +279,52 @@ int main(int argc, char* argv[])
 
   allocation_tableau(ImgP, OCTET, nTaille3P);
   
+  int t = 0;
+  int cp = 0;
+  int tH = 0;
+  int cpH = 0;
   k = 0;
-  for(int i = 0; i+tailleBlocH < nHR ; i+=tailleBlocH){
+  for(int i = 0; i+tailleBloc < nHR ; i+=tailleBloc){
     l = 0;
-    for(int j = 0; j+3*tailleBlocW < nWR*3; j+=3*tailleBlocW){
-      ImgP[k*3*nWP+l] = Img[(i+valMoyH)*3*nWR+j+valMoyW*3];
-      ImgP[k*3*nWP+l+1] = Img[(i+valMoyH)*3*nWR+j+1+valMoyW*3];
-      ImgP[k*3*nWP+l+2] = Img[(i+valMoyH)*3*nWR+j+2+valMoyW*3];
-      l+=3;
+    for(int j = 0; j+3*tailleBloc < nWR*3; j+=3*tailleBloc){
+      ImgP[k*3*nWP+l] = Img[(i+valMoy)*3*nWR+j+valMoy*3];
+      ImgP[k*3*nWP+l+1] = Img[(i+valMoy)*3*nWR+j+1+valMoy*3];
+      ImgP[k*3*nWP+l+2] = Img[(i+valMoy)*3*nWR+j+2+valMoy*3];
+      l+=3;      
     }
     k++;
   }
   
-  if(tailleBlocH * nHP > nHR){
+  if(tailleBloc * nHP > nHR){
     l = 0;
-    if((tailleBlocH * nHP - nHR)%2 == 0)
-      valMoyI = (tailleBlocH * nHP - nHR)/2;
+    if((tailleBloc * nHP - nHR)%2 == 0)
+      valMoyI = (tailleBloc * nHP - nHR)/2;
     else
-      valMoyI = (tailleBlocH * nHP - nHR + 1)/2;
-    for(int j = 0; j+3*tailleBlocW < nWR*3; j+=3*tailleBlocW){
-      ImgP[(nHP-1)*3*nWP+l] = Img[((nHP-1)*tailleBlocH+valMoyI)*3*nWR+j+valMoyW*3];
-      ImgP[(nHP-1)*3*nWP+l+1] = Img[((nHP-1)*tailleBlocH+valMoyI)*3*nWR+j+1+valMoyW*3];
-      ImgP[(nHP-1)*3*nWP+l+2] = Img[((nHP-1)*tailleBlocH+valMoyI)*3*nWR+j+2+valMoyW*3];
+      valMoyI = (tailleBloc * nHP - nHR + 1)/2;
+    for(int j = 0; j+3*tailleBloc < nWR*3; j+=3*tailleBloc){
+      ImgP[(nHP-1)*3*nWP+l] = Img[((nHP-1)*tailleBloc)*3*nWR+j+valMoy*3];
+      ImgP[(nHP-1)*3*nWP+l+1] = Img[((nHP-1)*tailleBloc)*3*nWR+j+1+valMoy*3];
+      ImgP[(nHP-1)*3*nWP+l+2] = Img[((nHP-1)*tailleBloc)*3*nWR+j+2+valMoy*3];
       l+=3;
     }
   }
-  if(tailleBlocW * nWP >= nWR){
+  if(tailleBloc * nWP >= nWR){
     k = 0;
-    if((tailleBlocW * nWP - nWR)%2 == 0)
-      valMoyJ = (tailleBlocW * nWP - nHR)/2;
+    if((tailleBloc * nWP - nWR)%2 == 0)
+      valMoyJ = (tailleBloc * nWP - nHR)/2;
     else
-      valMoyJ = (tailleBlocW * nHP - nHR + 1)/2;
-    for(int i = 0; i+tailleBlocH < nHR; i+=tailleBlocH){
-      ImgP[k*3*nWP+(nWP-1)*3] = Img[(i+valMoyH)*3*nWR+((nWP-1)*tailleBlocW)*3];
-      ImgP[k*3*nWP+(nWP-1)*3+1] = Img[(i+valMoyH)*3*nWR+((nWP-1)*tailleBlocW)*3+1];
-      ImgP[k*3*nWP+(nWP-1)*3+2] = Img[(i+valMoyH)*3*nWR+((nWP-1)*tailleBlocW)*3+2];
+      valMoyJ = (tailleBloc * nHP - nHR + 1)/2;
+    for(int i = 0; i+tailleBloc < nHR; i+=tailleBloc){
+      ImgP[k*3*nWP+(nWP-1)*3] = Img[(i+valMoy)*3*nWR+((nWP-1)*tailleBloc)*3];
+      ImgP[k*3*nWP+(nWP-1)*3+1] = Img[(i+valMoy)*3*nWR+((nWP-1)*tailleBloc)*3+1];
+      ImgP[k*3*nWP+(nWP-1)*3+2] = Img[(i+valMoy)*3*nWR+((nWP-1)*tailleBloc)*3+2];
       k++;
     }
   }
-  if(tailleBlocW * nWP >= nWR && tailleBlocH * nHP >= nHR){
-    ImgP[(nHP-1)*3*nWP+(nWP-1)*3] = Img[((nHP-1)*tailleBlocH)*3*nWR+((nWP-1)*tailleBlocW)*3];
-    ImgP[(nHP-1)*3*nWP+(nWP-1)*3+1] = Img[((nHP-1)*tailleBlocH)*3*nWR+((nWP-1)*tailleBlocW)*3+1];
-    ImgP[(nHP-1)*3*nWP+(nWP-1)*3+2] = Img[((nHP-1)*tailleBlocH)*3*nWR+((nWP-1)*tailleBlocW)*3+2];
+  if(tailleBloc * nWP >= nWR && tailleBloc * nHP >= nHR){
+    ImgP[(nHP-1)*3*nWP+(nWP-1)*3] = Img[((nHP-1)*tailleBloc)*3*nWR+((nWP-1)*tailleBloc)*3];
+    ImgP[(nHP-1)*3*nWP+(nWP-1)*3+1] = Img[((nHP-1)*tailleBloc)*3*nWR+((nWP-1)*tailleBloc)*3+1];
+    ImgP[(nHP-1)*3*nWP+(nWP-1)*3+2] = Img[((nHP-1)*tailleBloc)*3*nWR+((nWP-1)*tailleBloc)*3+2];
   }
       
 
@@ -416,7 +356,7 @@ int main(int argc, char* argv[])
     k++;
   }
   
-  //ecrire_image_ppm(cNomImgEcrite, ImgOut, nHPN, nWPN);
+  ecrire_image_ppm(cNomImgEcrite, ImgOut, nHPN, nWPN);
 
   free(ImgIn);
   free(ImgCadre);
